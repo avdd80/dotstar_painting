@@ -47,7 +47,7 @@ void init (void)
 
 	image_transpose ();
 
-	prepare_frame (image_transpose);
+	prepare_frame (transposed_image);
 	
 	wiringPiSPISetup (0, (SPI_SPEED_MHZ * 1000000));
 	
