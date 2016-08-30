@@ -48,7 +48,7 @@ void init (void)
 
 	load_image ();
 
-	image_transpose ();
+	//image_transpose ();
 	
 	printf ("transpose done\n");
 
