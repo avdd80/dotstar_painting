@@ -87,7 +87,7 @@ void prepare_frame (const unsigned long *image_ptr)
 			/* BLUE */
 			framed_spi_data[i][spi_pixel_index + 1] = (unsigned char)((image_ptr[image_pixel_index] & 0x0000FF));
 			
-			printf ("RED[%d] = %d", i, framed_spi_data[i][spi_pixel_index+3]);
+			//printf ("RED[%d] = %d", i, framed_spi_data[i][spi_pixel_index+3]);
 			/* Increment by 1 32 bit pixel for R, G, B values */
 			image_pixel_index += 1;
 		}
