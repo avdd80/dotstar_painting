@@ -43,7 +43,7 @@ int main (void)
 
 
 /* This function expects a linear array of size N x 144 pixels (R, G, B) with 32 bits per pixel */
-void prepare_frame (unsigned long image_ptr)
+void prepare_frame (unsigned long *image_ptr)
 {
 	unsigned int i, j;
 	unsigned int image_pixel_index = 0;
