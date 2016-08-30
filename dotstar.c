@@ -121,6 +121,7 @@ void load_image (void)
 
 	FILE* fp;
 	unsigned int num_pixels;
+	int i;
 	
 	fp = fopen ("test.bmp", "rb");
 	fseek (fp, BMP_WIDTH_OFFSET, SEEK_SET);
