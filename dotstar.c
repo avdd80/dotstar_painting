@@ -28,10 +28,6 @@ int main (void)
 {
 
 	unsigned int i;
-
-
-	
-	printf ("%d\n", sizeof (unsigned int));
 	
 	load_image ();
 	
@@ -128,13 +124,15 @@ void load_image (void)
 
 	FILE* fp;
 	
-	fp = fopen ("image.bmp", "rb");
+	fp = fopen ("test.bmp", "rb");
 	fseek (fp, BMP_WIDTH_OFFSET, SEEK_SET);
 	fscanf (fp, "%d", &bmpwidth);
 	fscanf (fp, "%d", &bmpheight);
 
 	printf ("width = %d\n", bmpwidth);
 	printf ("height = %d\n", bmpheight);
+	
+	fclose (fp);
 	
 	return;
 }
