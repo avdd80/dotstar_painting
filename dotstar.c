@@ -18,7 +18,7 @@ unsigned int* image_ptr;
 /* Max size = 2048 x 144 pixels */
 unsigned char framed_spi_data[2048][584];
 
-unsigned int               image_transpose[2048*144];
+unsigned int               transposed_image[2048*144];
 extern const unsigned char clear_dotstar[584];
 
 int main (void)
@@ -114,7 +114,7 @@ void load_image (void)
 
 	FILE* fp;
 	unsigned int num_pixels;
-	int i, bytes;
+	int bytes;
 	
 	fp = fopen ("test.rgba", "rb");
 
@@ -154,7 +154,7 @@ void image_transpose (void)
 	{
 		for (j = 0; j < bmpheight; j++)
 		{
-			image_transpose[i*bmpheight + j] = image_ptr[i + bmpwidth*j];
+			transposed_image[i*bmpheight + j] = image_ptr[i + bmpwidth*j];
 		}
 	}
 
