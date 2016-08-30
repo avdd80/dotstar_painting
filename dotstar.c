@@ -16,7 +16,7 @@ unsigned int bmpheight = 144;
 unsigned int* image_ptr;
 
 /* Max size = 2048 x 144 pixels */
-unsigned char framed_spi_data[2048][584];
+unsigned char framed_spi_data[1600][584];
 
 unsigned int               transposed_image[2048*144];
 extern const unsigned char clear_dotstar[584];
