@@ -19,7 +19,7 @@ unsigned int* image_ptr;
 /* Max size = 2048 x 144 pixels */
 unsigned char framed_spi_data[2048][584];
 
-unsigned int               transposed_image[2048*144];
+//unsigned int               transposed_image[2048*144];
 extern const unsigned char clear_dotstar[584];
 
 int main (void)
@@ -52,7 +52,7 @@ void init (void)
 	
 	printf ("transpose done\n");
 
-	prepare_frame (transposed_image);
+	prepare_frame (image_ptr);
 	
 	printf ("prepare frame done\n");
 	
@@ -142,7 +142,7 @@ void load_image (void)
 
 	printf ("Reading image %dx%d\n", bmpwidth, bmpheight);
 	
-	if (bmpheight != 144)
+	if (bmpwidth != 144)
 	{
 		printf ("Exiting... Image height is %d. Consider resizing to 144", bmpheight);
 		exit (1);
@@ -170,6 +170,7 @@ void flush_column (unsigned char* data_ptr)
 	return;
 }
 
+#if 0
 void image_transpose (void)
 {
 	unsigned int i, j;
@@ -186,3 +187,5 @@ void image_transpose (void)
 
 	return;
 }
+
+#endif

@@ -11,7 +11,7 @@ void prepare_frame (const unsigned long *image_ptr);
 void flush_column (unsigned char* data_ptr);
 
 /* Perform a transpose on the image */
-void image_transpose (void);
+//void image_transpose (void);
 
 void load_image (void);
 
