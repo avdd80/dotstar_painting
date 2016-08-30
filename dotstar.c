@@ -5,6 +5,8 @@
 
 /*                      3 bit Header   5 bit brightness level */
 #define LED_BRIGHTNESS (0xE0         | 7                    )
+#define SPI_SPEED_MHZ  ((unsigned long int)4)
+
 unsigned int bmpwidth  = 1;
 unsigned int bmpheight = 144;
 
@@ -13,6 +15,7 @@ unsigned char framed_spi_data[2048][584];
 
 /* 32 bit image data: 0x00RRGGBB */
 //extern const unsigned long image32[];
+extern const unsigned char clear_dotstar[584];
 unsigned long image322[4] = {0x00FF0000, 0x0000FF00, 0x000000FF, 0x0020AB50};
 
 int main (void)
@@ -20,15 +23,7 @@ int main (void)
 
 	unsigned int i;
 
-	if (bmpheight != 144)
-	{
-		printf ("Exit. Image heigh is %d. Consider resizing to 144", bmpheight);
-		exit (1);
-	}
-
-	void prepare_frame (image322);
-
-	wiringPiSPISetup (0, 4000000);
+	init ();
 
 	for (i = 0; i < bmpwidth; i++)
 	{
@@ -38,11 +33,27 @@ int main (void)
 		/* data write overhead = 389 us */		
 	}
 
-
 	return 0;
-
 }
 
+/* Initialize data and clear LED strip */
+void init (void)
+{
+
+	prepare_frame (image322);
+	
+	wiringPiSPISetup (0, (SPI_SPEED_MHZ * 1000000));
+	
+	/* Clear the DotStar LED strip */
+	flush_column (clear_dotstar);
+	
+	if (bmpheight != 144)
+	{
+		printf ("Exiting... Image heigh is %d. Consider resizing to 144", bmpheight);
+		exit (1);
+	}
+	
+}
 
 /* This function expects a linear array of size N x 144 pixels (R, G, B) with 32 bits per pixel */
 void prepare_frame (unsigned long *image_ptr)
@@ -81,11 +92,12 @@ void prepare_frame (unsigned long *image_ptr)
 		framed_spi_data[i][583] = 0xFF;
 
 	}
+	return;
 }
 
 void flush_column (unsigned char* data_ptr)
 {
 
 	wiringPiSPIDataRW (0, data_ptr, 584);
-
+	return;
 }
