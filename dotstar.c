@@ -4,36 +4,27 @@
 #include "dotstar.h"
 
 /*                      3 bit Header   5 bit brightness level */
-#define LED_BRIGHTNESS (0xE0         | 1                    )
+#define LED_BRIGHTNESS (0xE0         | 5                    )
 #define SPI_SPEED_MHZ  ((unsigned long int)4)
 #define DELAY_MS       4
 
-#define BMP_WIDTH_OFFSET      18
-#define BMP_HEIGHT_OFFSET     22
-#define BMP_IMAGE_DATA_OFFSET 56
 
 unsigned int bmpwidth = 2;
 unsigned int bmpheight = 144;
 
+/* Image loaded as 0xAABBGGRR */
 unsigned int* image_ptr;
 
 /* Max size = 2048 x 144 pixels */
 unsigned char framed_spi_data[2048][584];
 
-/* 32 bit image data: 0x00RRGGBB */
-extern const unsigned long image32[];
-unsigned long              image32_transpose[2048*144];
+unsigned int               image_transpose[2048*144];
 extern const unsigned char clear_dotstar[584];
-//unsigned long image32[4] = {0x00FF0000, 0x0000FF00, 0x000000FF, 0x0020AB50};
 
 int main (void)
 {
 
 	unsigned int i;
-	
-	load_image ();
-	
-	exit (1);
 
 	init ();
 
@@ -52,9 +43,11 @@ int main (void)
 void init (void)
 {
 
+	load_image ();
+
 	image_transpose ();
 
-	prepare_frame (image32_transpose);
+	prepare_frame (image_transpose);
 	
 	wiringPiSPISetup (0, (SPI_SPEED_MHZ * 1000000));
 	
@@ -86,12 +79,12 @@ void prepare_frame (const unsigned long *image_ptr)
 			spi_pixel_index = 4 + j * 4;
 			
 			framed_spi_data[i][spi_pixel_index]     = LED_BRIGHTNESS;
-			/* RED */
-			framed_spi_data[i][spi_pixel_index + 3] = (unsigned char)((image_ptr[image_pixel_index] & 0xFF0000) >> 16);
+			/* BLUE */
+			framed_spi_data[i][spi_pixel_index + 1] = (unsigned char)((image_ptr[image_pixel_index] & 0xFF0000) >> 16);
 			/* GREEN */
 			framed_spi_data[i][spi_pixel_index + 2] = (unsigned char)((image_ptr[image_pixel_index] & 0x00FF00) >> 8);
-			/* BLUE */
-			framed_spi_data[i][spi_pixel_index + 1] = (unsigned char)((image_ptr[image_pixel_index] & 0x0000FF));
+			/* RED */
+			framed_spi_data[i][spi_pixel_index + 3] = (unsigned char)((image_ptr[image_pixel_index] & 0x0000FF));
 
 			/* Increment by 1 32 bit pixel for R, G, B values */
 			image_pixel_index += 1;
@@ -139,19 +132,9 @@ void load_image (void)
 	image_ptr = (unsigned int*) malloc (num_pixels);
 
 	bytes = fread ((unsigned char*)image_ptr, 1, num_pixels*4, fp);
-
-	//fclose (fp);
 	
 	printf ("read bytes = %d\n", bytes);
 
-
-	for (i = 0;i < 10; i++)
-	{
-		printf ("0x%x\n", image_ptr[i]);
-	}
-	
-	exit (1);
-	
 	return;
 }
 
@@ -171,17 +154,9 @@ void image_transpose (void)
 	{
 		for (j = 0; j < bmpheight; j++)
 		{
-			image32_transpose[i*bmpheight + j] = image32[i + bmpwidth*j];
+			image_transpose[i*bmpheight + j] = image_ptr[i + bmpwidth*j];
 		}
 	}
-	
-	for (i = 0; i < 1; i++)
-	{
-		for (j = 0; j < bmpheight; j++)
-		{
-			printf ("0x%d\n", sizeof (unsigned int));
-		}
-	}
-	
+
 	return;
 }
