@@ -125,8 +125,8 @@ void load_image (void)
 	FILE* fp;
 	
 	fp = fopen ("test.bmp", "rb");
-	fseek (fp, BMP_WIDTH_OFFSET, SEEK_SET);
-	fread (&bmpwidth, sizeof(bmpwidth), 1, fp);
+	fseek (fp, BMP_WIDTH_OFFSET+2, SEEK_SET);
+	fread (&bmpwidth, 2, 1, fp);
 	fread (&bmpheight, 4, 1, fp);
 
 	printf ("width = %d\n", bmpwidth);
