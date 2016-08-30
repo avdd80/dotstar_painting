@@ -9,7 +9,7 @@
 #define DELAY_MS       4
 
 
-unsigned int bmpwidth  = 1600;
+unsigned int bmpwidth  = 5;
 unsigned int bmpheight = 144;
 
 /* Max size = 2048 x 144 pixels */
@@ -51,7 +51,7 @@ void init (void)
 	
 	if (bmpheight != 144)
 	{
-		printf ("Exiting... Image heigh is %d. Consider resizing to 144", bmpheight);
+		printf ("Exiting... Image height is %d. Consider resizing to 144", bmpheight);
 		exit (1);
 	}
 	return;
@@ -64,6 +64,8 @@ void prepare_frame (const unsigned long *image_ptr)
 	unsigned int i, j;
 	unsigned int image_pixel_index = 0;
 	unsigned int spi_pixel_index   = 0;
+
+	printf ("0x%x\n", image_ptr);
 
 	for (i = 0; i < bmpwidth; i++)
 	{
