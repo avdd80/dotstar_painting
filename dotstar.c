@@ -140,7 +140,7 @@ void load_image (void)
 
 	bytes = fread ((unsigned char*)image_ptr, 1, num_pixels*4, fp);
 
-	fclose (fp);
+	//fclose (fp);
 	
 	printf ("read bytes = %d\n", bytes);
 
