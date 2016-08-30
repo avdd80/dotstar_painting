@@ -17,7 +17,7 @@ unsigned int bmpheight = 144;
 unsigned int* image_ptr;
 
 /* Max size = 2048 x 144 pixels */
-unsigned char framed_spi_data[1600][584];
+unsigned char framed_spi_data[2048][584];
 
 unsigned int               transposed_image[2048*144];
 extern const unsigned char clear_dotstar[584];
@@ -28,6 +28,8 @@ int main (void)
 	unsigned int i;
 
 	init ();
+	
+	printf ("init done\n");
 
 	for (i = 0; i < bmpwidth; i++)
 	{
@@ -49,6 +51,8 @@ void init (void)
 	image_transpose ();
 
 	prepare_frame (transposed_image);
+	
+	printf ("prepare frame done\n");
 	
 	wiringPiSPISetup (0, (SPI_SPEED_MHZ * 1000000));
 	
@@ -149,6 +153,8 @@ void load_image (void)
 	
 	printf ("read bytes = %d\n", bytes);
 
+	printf ("iamge_loaded\n");
+
 	return;
 }
 
@@ -163,6 +169,8 @@ void flush_column (unsigned char* data_ptr)
 void image_transpose (void)
 {
 	unsigned int i, j;
+
+	printf ("transpose\n");
 
 	for (i = 0; i < bmpwidth; i++)
 	{
