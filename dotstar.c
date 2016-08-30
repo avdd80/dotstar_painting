@@ -133,6 +133,7 @@ void load_image (void)
 
 	FILE* fp;
 	unsigned int num_pixels, i;
+	unsigned char *p;
 	int bytes;
 	int dummy;
 	
@@ -151,7 +152,8 @@ void load_image (void)
 	for (i = 0; i < bmpheight; i++)
 	{
 		printf ("idx %d\n", i);
-		fread ((unsigned char*)image_ptr[i], 1, bmpwidth, fp);
+		//fread ((unsigned char*)image_ptr[i], 1, bmpwidth, fp);
+		fread (p, 1, bmpwidth, fp);
 	}
 	
 	printf ("Image read done");
