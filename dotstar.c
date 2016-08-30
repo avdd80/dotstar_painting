@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <wiringPiSPI.h>
-#include <image888.c>
 
 /*                      3 bit Header   5 bit brightness level */
 #define LED_BRIGHTNESS (0xE0         | 7                    )
