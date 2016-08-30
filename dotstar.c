@@ -12,7 +12,7 @@
 unsigned int bmpwidth = 2;
 unsigned int bmpheight = 144;
 
-/* Image loaded as 0xAABBGGRR */
+/* Image loaded as 0xRR GG BB AA */
 unsigned int* image_ptr;
 
 /* Max size = 2048 x 144 pixels */
@@ -79,12 +79,12 @@ void prepare_frame (const unsigned long *image_ptr)
 			spi_pixel_index = 4 + j * 4;
 			
 			framed_spi_data[i][spi_pixel_index]     = LED_BRIGHTNESS;
-			/* BLUE */
-			framed_spi_data[i][spi_pixel_index + 1] = (unsigned char)((image_ptr[image_pixel_index] & 0xFF0000) >> 16);
-			/* GREEN */
-			framed_spi_data[i][spi_pixel_index + 2] = (unsigned char)((image_ptr[image_pixel_index] & 0x00FF00) >> 8);
 			/* RED */
-			framed_spi_data[i][spi_pixel_index + 3] = (unsigned char)((image_ptr[image_pixel_index] & 0x0000FF));
+			framed_spi_data[i][spi_pixel_index + 3] = (unsigned char)((image_ptr[image_pixel_index] & 0xFF000000) >> 16);
+			/* GREEN */
+			framed_spi_data[i][spi_pixel_index + 2] = (unsigned char)((image_ptr[image_pixel_index] & 0x00FF0000) >> 8);
+			/* BLUE */
+			framed_spi_data[i][spi_pixel_index + 1] = (unsigned char)((image_ptr[image_pixel_index] & 0x0000FF00));
 
 			/* Increment by 1 32 bit pixel for R, G, B values */
 			image_pixel_index += 1;
