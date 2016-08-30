@@ -32,7 +32,7 @@ int main (void)
 	for (i = 0; i < bmpwidth; i++)
 	{
 		flush_column (&framed_spi_data[i][0]);
-		sleep (0.1);
+		sleep (0.3);
 		/* delay 30.86 ms - 10 mph */
 		/* data write overhead = 389 us */		
 	}
