@@ -100,9 +100,9 @@ void prepare_frame (const unsigned long *image_ptr)
 
 	}
 	
-	for (i = 0; i < 584; i++)
+	for (j = 0; j < 584; j++)
 	{
-		printf ("%d\n", framed_spi_data[i]);
+		printf ("%d\n", framed_spi_data[0][j]);
 	}
 
 	
