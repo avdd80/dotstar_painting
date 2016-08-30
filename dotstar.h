@@ -13,4 +13,6 @@ void flush_column (unsigned char* data_ptr);
 /* Perform a transpose on the image */
 void image_transpose (void);
 
+void load_image (void);
+
 #endif /* _DOTSTAR_H */

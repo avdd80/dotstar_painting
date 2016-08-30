@@ -8,9 +8,12 @@
 #define SPI_SPEED_MHZ  ((unsigned long int)4)
 #define DELAY_MS       4
 
+#define BMP_WIDTH_OFFSET   10
+#define BMP_HEIGHT_OFFSET  14
 
-unsigned int bmpwidth  = 192;
-unsigned int bmpheight = 144;
+
+unsigned int bmpwidth;
+unsigned int bmpheight;
 
 /* Max size = 2048 x 144 pixels */
 unsigned char framed_spi_data[2048][584];
@@ -29,6 +32,8 @@ int main (void)
 	init ();
 	
 	printf ("%d\n", sizeof (unsigned int));
+	
+	load_image ();
 	
 	exit (1);
 
@@ -112,6 +117,22 @@ void prepare_frame (const unsigned long *image_ptr)
 		//printf ("%d\n", framed_spi_data[0][j]);
 	//}
 
+	
+	return;
+}
+
+void load_image (void)
+{
+
+	FILE* fp;
+	
+	fp = fopen ("image.bmp", "rb");
+	fseek (fp, BMP_WIDTH_OFFSET, SEEK_SET);
+	fscanf (fp, "%d", &bmpwidth);
+	fscanf (fp, "%d", &bmpheight);
+
+	printf ("width = %d\n", bmpwidth);
+	printf ("height = %d\n", bmpheight);
 	
 	return;
 }
