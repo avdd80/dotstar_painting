@@ -47,7 +47,7 @@ void init (void)
 	/* Clear the DotStar LED strip */
 	flush_column ((unsigned char *)clear_dotstar);
 	
-	exit (1);
+	//exit (1);
 	
 	if (bmpheight != 144)
 	{
