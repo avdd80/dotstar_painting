@@ -135,7 +135,7 @@ void image_transpose (void)
 	{
 		for (j = 0; j < bmpheight; j++)
 		{
-			printf ("0x%x\n", image32_transpose[j]);
+			printf ("0x%x\n", (image32_transpose[j] & 0xFF0000) >> 16);
 		}
 	}
 	
