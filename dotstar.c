@@ -1,14 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <wiringPiSPI.h>
+#include <sys/time.h>
 #include "dotstar.h"
 
 /*                      3 bit Header   5 bit brightness level */
 #define LED_BRIGHTNESS (0xE0         | 7                    )
-#define SPI_SPEED_MHZ  ((unsigned long int)4)
+#define SPI_SPEED_MHZ  ((unsigned long int)8)
+#define DELAY_US       50000
 
-unsigned int bmpwidth  = 1;
-unsigned int bmpheight = 10;
+
+unsigned int bmpwidth  = 1600;
+unsigned int bmpheight = 144;
 
 /* Max size = 2048 x 144 pixels */
 unsigned char framed_spi_data[2048][584];
@@ -28,7 +31,7 @@ int main (void)
 	for (i = 0; i < bmpwidth; i++)
 	{
 		flush_column (&framed_spi_data[i][0]);
-
+		usleep(DELAY_US);
 		/* delay 30.86 ms - 10 mph */
 		/* data write overhead = 389 us */		
 	}
@@ -47,12 +50,12 @@ void init (void)
 	/* Clear the DotStar LED strip */
 	flush_column ((unsigned char *)clear_dotstar);
 	
-	//exit (1);
+	exit (1);
 	
 	if (bmpheight != 144)
 	{
 		printf ("Exiting... Image heigh is %d. Consider resizing to 144", bmpheight);
-		//exit (1);
+		exit (1);
 	}
 	return;
 	
@@ -86,8 +89,7 @@ void prepare_frame (const unsigned long *image_ptr)
 			framed_spi_data[i][spi_pixel_index + 2] = (unsigned char)((image_ptr[image_pixel_index] & 0x00FF00) >> 8);
 			/* BLUE */
 			framed_spi_data[i][spi_pixel_index + 1] = (unsigned char)((image_ptr[image_pixel_index] & 0x0000FF));
-			
-			//printf ("RED[%d] = %d", i, framed_spi_data[i][spi_pixel_index+3]);
+
 			/* Increment by 1 32 bit pixel for R, G, B values */
 			image_pixel_index += 1;
 		}
@@ -100,10 +102,10 @@ void prepare_frame (const unsigned long *image_ptr)
 
 	}
 	
-	for (j = 0; j < 584; j++)
-	{
-		printf ("%d\n", framed_spi_data[0][j]);
-	}
+	//for (j = 0; j < 584; j++)
+	//{
+		//printf ("%d\n", framed_spi_data[0][j]);
+	//}
 
 	
 	return;
