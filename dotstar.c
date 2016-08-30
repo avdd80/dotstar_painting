@@ -12,10 +12,10 @@
 #define BMP_HEIGHT_OFFSET     22
 #define BMP_IMAGE_DATA_OFFSET 56
 
-unsigned int bmpwidth;
-unsigned int bmpheight;
+unsigned int bmpwidth = 2;
+unsigned int bmpheight = 144;
 
-unsigned char* image_ptr;
+unsigned int* image_ptr;
 
 /* Max size = 2048 x 144 pixels */
 unsigned char framed_spi_data[2048][584];
@@ -123,11 +123,42 @@ void load_image (void)
 	unsigned int num_pixels;
 	int i;
 	
+	fp = fopen ("test.rgba", "rb");
+
+	printf ("Reading image %dx%d\n", bmpwidth, bmpheight);
+	
+	if (bmpheight != 144)
+	{
+		printf ("Exiting... Image height is %d. Consider resizing to 144", bmpheight);
+		exit (1);
+	}
+	
+	num_pixels = bmpwidth * bmpheight;
+	
+	/* Allocate HEIGHT x WIDTH x 3 bytes to store the image */
+	image_ptr = (unsigned int*) malloc (num_pixels);
+
+	fread ((unsigned char*)image_ptr, 1, num_pixels*4, fp);
+	
+	fclose (fp);
+
+	for (i = 0;i < 10; i++)
+	{
+		printf ("0x%x\n", image_ptr[i]);
+	}
+	
+	return;
+}
+
+#if 0
+void load_image (void)
+{
+
+	FILE* fp;
+	unsigned int num_pixels;
+	int i;
+	
 	fp = fopen ("test.bmp", "rb");
-	fseek (fp, BMP_WIDTH_OFFSET, SEEK_SET);
-	fread (&bmpwidth, 2, 1, fp);
-	fseek (fp, BMP_HEIGHT_OFFSET, SEEK_SET);
-	fread (&bmpheight, 2, 1, fp);
 
 	printf ("Reading image %dx%d\n", bmpwidth, bmpheight);
 	
@@ -155,6 +186,7 @@ void load_image (void)
 	
 	return;
 }
+#endif
 
 void flush_column (unsigned char* data_ptr)
 {
