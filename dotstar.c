@@ -79,13 +79,20 @@ void prepare_frame (const unsigned long *image_ptr)
 			spi_pixel_index = 4 + j * 4;
 			
 			framed_spi_data[i][spi_pixel_index]     = LED_BRIGHTNESS;
-			
+			#if 0
 			/* RED */
 			framed_spi_data[i][spi_pixel_index + 3] = (unsigned char)((image_ptr[image_pixel_index] & 0xFF0000) >> 16);
 			/* GREEN */
 			framed_spi_data[i][spi_pixel_index + 2] = (unsigned char)((image_ptr[image_pixel_index] & 0x00FF00) >> 8);
 			/* BLUE */
 			framed_spi_data[i][spi_pixel_index + 1] = (unsigned char)((image_ptr[image_pixel_index] & 0x0000FF));
+#endif
+			/* RED */
+			framed_spi_data[i][spi_pixel_index + 3] = (unsigned char)((image_ptr[image_pixel_index] & 0xFF0000) >> 16);
+			/* GREEN */
+			framed_spi_data[i][spi_pixel_index + 2] = 0;
+			/* BLUE */
+			framed_spi_data[i][spi_pixel_index + 1] = 0;
 
 			/* Increment by 1 32 bit pixel for R, G, B values */
 			image_pixel_index += 1;
