@@ -105,7 +105,6 @@ void prepare_frame (const unsigned long *data_ptr)
 			/* RED */
 			framed_spi_data[i][spi_pixel_index + 3] = r;
 			
-			printf ("0x%x\n", data_ptr[image_pixel_index]);
 			/* GREEN */
 			framed_spi_data[i][spi_pixel_index + 2] = g; 
 			/* BLUE */
