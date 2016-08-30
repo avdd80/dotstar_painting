@@ -8,8 +8,8 @@
 #define SPI_SPEED_MHZ  ((unsigned long int)4)
 #define DELAY_MS       4
 
-#define BMP_WIDTH_OFFSET   10
-#define BMP_HEIGHT_OFFSET  14
+#define BMP_WIDTH_OFFSET   16
+#define BMP_HEIGHT_OFFSET  20
 
 
 unsigned int bmpwidth;
