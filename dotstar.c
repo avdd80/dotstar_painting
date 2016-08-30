@@ -9,17 +9,20 @@
 #define SPI_SPEED_MHZ  ((unsigned long int)4)
 #define DELAY_MS       10
 
+#define BMPWIDTH        1633
+#define BMPHEIGHT       144
 
-unsigned int bmpwidth = 1633;
-unsigned int bmpheight = 144;
+
+unsigned int bmpwidth = BMPWIDTH;
+unsigned int bmpheight = BMPHEIGHT;
 
 /* Image loaded as 0xRR GG BB AA */
-unsigned int* image_ptr;
+unsigned int image_ptr[BMPHEIGHT][BMPWIDTH];
 
 /* Max size = 2048 x 144 pixels */
 unsigned char framed_spi_data[2048][584];
 
-unsigned int               transposed_image[2048*144];
+unsigned int               transposed_image[BMPWIDTH][BMPHEIGHT];
 extern const unsigned char clear_dotstar[584];
 
 int main (void)
@@ -128,7 +131,7 @@ void load_image (void)
 {
 
 	FILE* fp;
-	unsigned int num_pixels;
+	unsigned int num_pixels, i;
 	int bytes;
 	int dummy;
 	
@@ -144,10 +147,10 @@ void load_image (void)
 	
 	num_pixels = bmpwidth * bmpheight;
 	
-	/* Allocate HEIGHT x WIDTH x 3 bytes to store the image */
-	image_ptr = (unsigned int*) malloc (num_pixels);
-
-	bytes = fread ((unsigned char*)image_ptr, 1, num_pixels*4, fp);
+	for (i = 0; i < bmpheight; i++)
+	{
+		fread ((unsigned char*)image_ptr[i], 1, bmpwidth, fp);
+	}
 	
 	printf ("Image read done");
 	
@@ -182,7 +185,7 @@ void image_transpose (void)
 	{
 		for (j = 0; j < bmpheight; j++)
 		{
-			transposed_image[i*bmpheight + j] = image_ptr[i + bmpwidth*j];
+			transposed_image[i][j] = image_ptr[j][i];
 		}
 	}
 
