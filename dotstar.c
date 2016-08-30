@@ -45,7 +45,7 @@ void init (void)
 	wiringPiSPISetup (0, (SPI_SPEED_MHZ * 1000000));
 	
 	/* Clear the DotStar LED strip */
-	flush_column (clear_dotstar);
+	flush_column ((unsigned char *)clear_dotstar);
 	
 	if (bmpheight != 144)
 	{
