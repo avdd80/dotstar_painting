@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <wiringPiSPI.h>
 #include <sys/time.h>
+#include <unistd.h>
 #include "dotstar.h"
 
 /*                      3 bit Header   5 bit brightness level */
@@ -10,7 +11,7 @@
 #define DELAY_US       50000
 
 
-unsigned int bmpwidth  = 1600;
+unsigned int bmpwidth  = 1;
 unsigned int bmpheight = 144;
 
 /* Max size = 2048 x 144 pixels */
@@ -31,7 +32,7 @@ int main (void)
 	for (i = 0; i < bmpwidth; i++)
 	{
 		flush_column (&framed_spi_data[i][0]);
-		usleep(DELAY_US);
+		sleep (1);
 		/* delay 30.86 ms - 10 mph */
 		/* data write overhead = 389 us */		
 	}
