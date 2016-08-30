@@ -65,7 +65,6 @@ void prepare_frame (const unsigned long *image_ptr)
 	unsigned int image_pixel_index = 0;
 	unsigned int spi_pixel_index   = 0;
 
-	printf ("0x%x\n", image_ptr);
 
 	for (i = 0; i < bmpwidth; i++)
 	{
@@ -120,6 +119,7 @@ void prepare_frame (const unsigned long *image_ptr)
 void flush_column (unsigned char* data_ptr)
 {
 
+	printf ("0x%x\n", data_ptr);
 	wiringPiSPIDataRW (0, data_ptr, 584);
 	return;
 }
