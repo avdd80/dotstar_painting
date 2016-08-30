@@ -8,12 +8,14 @@
 #define SPI_SPEED_MHZ  ((unsigned long int)4)
 #define DELAY_MS       4
 
-#define BMP_WIDTH_OFFSET   18
-#define BMP_HEIGHT_OFFSET  22
-
+#define BMP_WIDTH_OFFSET      18
+#define BMP_HEIGHT_OFFSET     22
+#define BMP_IMAGE_DATA_OFFSET 56
 
 unsigned int bmpwidth;
 unsigned int bmpheight;
+
+unsigned char image_ptr;
 
 /* Max size = 2048 x 144 pixels */
 unsigned char framed_spi_data[2048][584];
@@ -58,12 +60,7 @@ void init (void)
 	
 	/* Clear the DotStar LED strip */
 	flush_column ((unsigned char *)clear_dotstar);
-	
-	if (bmpheight != 144)
-	{
-		printf ("Exiting... Image height is %d. Consider resizing to 144", bmpheight);
-		exit (1);
-	}
+
 	return;
 	
 }
@@ -123,6 +120,7 @@ void load_image (void)
 {
 
 	FILE* fp;
+	unsigned int num_pixels;
 	
 	fp = fopen ("test.bmp", "rb");
 	fseek (fp, BMP_WIDTH_OFFSET, SEEK_SET);
@@ -130,10 +128,29 @@ void load_image (void)
 	fseek (fp, BMP_HEIGHT_OFFSET, SEEK_SET);
 	fread (&bmpheight, 2, 1, fp);
 
-	printf ("width = %d\n", bmpwidth);
-	printf ("height = %d\n", bmpheight);
+	printf ("Reading image %dx%d\n", bmpwidth, bmpheight);
+	
+	if (bmpheight != 144)
+	{
+		printf ("Exiting... Image height is %d. Consider resizing to 144", bmpheight);
+		exit (1);
+	}
+	
+	num_pixels = bmpwidth * bmpheight;
+	
+	/* Allocate HEIGHT x WIDTH x 3 bytes to store the image */
+	image_ptr = (unsigned char*) malloc (num_pixels * 3);
+	
+	/* Seek to the start of image */
+	fseek (fp, 56, SEEK_SET);
+	fread ((unsigned char*)&image_ptr, 1, num_pixels, fp);
 	
 	fclose (fp);
+
+	for (i = 0;i < 30; i++)
+	{
+		printf ("0x%x\n", image_ptr[i]);
+	}
 	
 	return;
 }
