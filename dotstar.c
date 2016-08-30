@@ -17,7 +17,7 @@ unsigned int bmpwidth = BMPWIDTH;
 unsigned int bmpheight = BMPHEIGHT;
 
 /* Image loaded as 0xRR GG BB AA */
-unsigned int image_ptr[BMPHEIGHT][BMPWIDTH];
+unsigned int image_ptr[BMPHEIGHT+1][BMPWIDTH];
 
 /* Max size = 2048 x 144 pixels */
 unsigned char framed_spi_data[2048][584];
@@ -132,8 +132,7 @@ void load_image (void)
 {
 
 	FILE* fp;
-	unsigned int num_pixels, i;
-	unsigned char *p;
+	unsigned int i;
 	int bytes;
 	int dummy;
 	
@@ -147,13 +146,10 @@ void load_image (void)
 		exit (1);
 	}
 	
-	num_pixels = bmpwidth * bmpheight;
-	
 	for (i = 0; i < bmpheight; i++)
 	{
 		printf ("idx %d\n", i);
-		//fread ((unsigned char*)image_ptr[i], 1, bmpwidth, fp);
-		fread (p, 1, bmpwidth, fp);
+		fread ((unsigned char*)image_ptr[i], 1, bmpwidth, fp);
 	}
 	
 	printf ("Image read done");
