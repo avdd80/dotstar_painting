@@ -9,7 +9,7 @@
 #define SPI_SPEED_MHZ  ((unsigned long int)4)
 #define DELAY_MS       10
 
-#define BMPWIDTH        2
+#define BMPWIDTH        1
 #define BMPHEIGHT       144
 
 
@@ -37,6 +37,7 @@ int main (void)
 	for (i = 0; i < bmpwidth; i++)
 	{
 		flush_column (&framed_spi_data[i][0]);
+		printf ("0x%X,\n", framed_spi_data[i][0]);
 		delay (DELAY_MS);
 		/* delay 30.86 ms - 10 mph */
 		/* data write overhead = 389 us */		
