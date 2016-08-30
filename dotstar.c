@@ -10,7 +10,7 @@
 #define DELAY_MS       10
 
 
-unsigned int bmpwidth = 2;
+unsigned int bmpwidth = 1600;
 unsigned int bmpheight = 144;
 
 /* Image loaded as 0xRR GG BB AA */
