@@ -49,6 +49,8 @@ void init (void)
 	load_image ();
 
 	image_transpose ();
+	
+	printf ("transpose done\n");
 
 	prepare_frame (transposed_image);
 	
@@ -71,6 +73,8 @@ void prepare_frame (const unsigned long *image_ptr)
 	unsigned int spi_pixel_index   = 0;
 	unsigned char r, g, b;
 	unsigned int gamma;
+
+	printf ("preparing frame\n");
 
 	for (i = 0; i < bmpwidth; i++)
 	{
