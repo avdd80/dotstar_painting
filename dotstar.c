@@ -11,7 +11,7 @@
 #define DELAY_US       50000
 
 
-unsigned int bmpwidth  = 1;
+unsigned int bmpwidth  = 1600;
 unsigned int bmpheight = 144;
 
 /* Max size = 2048 x 144 pixels */
