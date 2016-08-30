@@ -8,7 +8,7 @@
 #define SPI_SPEED_MHZ  ((unsigned long int)4)
 
 unsigned int bmpwidth  = 1;
-unsigned int bmpheight = 144;
+unsigned int bmpheight = 10;
 
 /* Max size = 2048 x 144 pixels */
 unsigned char framed_spi_data[2048][584];
@@ -52,8 +52,9 @@ void init (void)
 	if (bmpheight != 144)
 	{
 		printf ("Exiting... Image heigh is %d. Consider resizing to 144", bmpheight);
-		exit (1);
+		//exit (1);
 	}
+	return;
 	
 }
 
@@ -72,7 +73,7 @@ void prepare_frame (unsigned long *image_ptr)
 		framed_spi_data[i][2] = 0;
 		framed_spi_data[i][3] = 0;
 
-		for (j = 0; j < 144; j++)
+		for (j = 0; j < 10; j++)
 		{
 			/* Add 1 to account for START OF FRAME marker */
 			spi_pixel_index = 1 + j * 4;
@@ -86,7 +87,7 @@ void prepare_frame (unsigned long *image_ptr)
 			/* BLUE */
 			framed_spi_data[i][spi_pixel_index + 1] = (unsigned char)((image_ptr[image_pixel_index] & 0x0000FF));
 			
-			
+			printf ("RED[%d] = %d", i, framed_spi_data[i][spi_pixel_index+3]);
 			/* Increment by 1 32 bit pixel for R, G, B values */
 			image_pixel_index += 1;
 		}
