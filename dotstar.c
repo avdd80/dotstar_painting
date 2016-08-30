@@ -6,7 +6,7 @@
 /*                      3 bit Header   5 bit brightness level */
 #define LED_BRIGHTNESS (0xE0         | 1                    )
 #define SPI_SPEED_MHZ  ((unsigned long int)8)
-#define DELAY_MS       10
+#define DELAY_MS       4
 
 
 unsigned int bmpwidth  = 1600;
