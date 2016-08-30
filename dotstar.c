@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <wiringPiSPI.h>
+#include "dotstar.h"
 
 /*                      3 bit Header   5 bit brightness level */
 #define LED_BRIGHTNESS (0xE0         | 7                    )
-unsigned int bmpwidth = 1633;
+unsigned int bmpwidth  = 1633;
+unsigned int bmpheight = 144;
 
 /* Max size = 2048 x 144 pixels */
 unsigned char              framed_spi_data[2048][584];
@@ -16,9 +18,9 @@ int main (void)
 
 	unsigned int i;
 
-	if (BMPHEIGHT != 144)
+	if (bmpheight != 144)
 	{
-		printf ("Exit. Image heigh is %d. Consider resizing to 144", BMPHEIGHT);
+		printf ("Exit. Image heigh is %d. Consider resizing to 144", bmpheight);
 		exit (1);
 	}
 
@@ -45,6 +47,7 @@ void prepare_frame (unsigned long image_ptr)
 {
 	unsigned int i, j;
 	unsigned int image_pixel_index = 0;
+	unsigned int spi_pixel_index   = 0;
 
 	for (i = 0; i < bmpwidth; i++)
 	{
