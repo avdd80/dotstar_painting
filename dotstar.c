@@ -99,6 +99,11 @@ void prepare_frame (const unsigned long *image_ptr)
 		framed_spi_data[i][583] = 0xFF;
 
 	}
+	
+	for (i = 0; i < 584; i++)
+	{
+		printf ("%d\n", framed_spi_data[i]);
+	}
 
 	
 	return;
