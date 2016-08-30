@@ -9,7 +9,7 @@
 #define DELAY_MS       4
 
 
-unsigned int bmpwidth  = 3;
+unsigned int bmpwidth  = 1;
 unsigned int bmpheight = 144;
 
 /* Max size = 2048 x 144 pixels */
@@ -68,8 +68,6 @@ void prepare_frame (const unsigned long *image_ptr)
 	unsigned int image_pixel_index = 0;
 	unsigned int spi_pixel_index   = 0;
 
-
-
 	for (i = 0; i < bmpwidth; i++)
 	{
 		/* START OF FRAME marker */
@@ -94,7 +92,7 @@ void prepare_frame (const unsigned long *image_ptr)
 			/* Increment by 1 32 bit pixel for R, G, B values */
 			image_pixel_index += 1;
 			
-			printf ("%d,%d,%d\n", framed_spi_data[i][spi_pixel_index + 3], framed_spi_data[i][spi_pixel_index + 2], framed_spi_data[i][spi_pixel_index + 1]);
+			//printf ("%d,%d,%d\n", framed_spi_data[i][spi_pixel_index + 3], framed_spi_data[i][spi_pixel_index + 2], framed_spi_data[i][spi_pixel_index + 1]);
 		}
 
 		/* END OF FRAME marker */
@@ -130,6 +128,14 @@ void image_transpose (void)
 		for (j = 0; j < bmpheight; j++)
 		{
 			image32_transpose[i*bmpheight + j] = image32[i + bmpwidth*j];
+		}
+	}
+	
+	for (i = 0; i < 1; i++)
+	{
+		for (j = 0; j < bmpheight; j++)
+		{
+			printf ("0x%d\n", (image32_transpose[j] * 0xFF0000) >> 16);
 		}
 	}
 	
