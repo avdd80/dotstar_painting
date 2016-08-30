@@ -27,6 +27,10 @@ int main (void)
 	unsigned int i;
 
 	init ();
+	
+	printf ("%d\n", sizeof (unsigned int));
+	
+	exit (1);
 
 	for (i = 0; i < bmpwidth; i++)
 	{
@@ -109,13 +113,6 @@ void prepare_frame (const unsigned long *image_ptr)
 	//}
 
 	
-	return;
-}
-
-void flush_column (unsigned char* data_ptr)
-{
-
-	wiringPiSPIDataRW (0, data_ptr, 584);
 	return;
 }
 
