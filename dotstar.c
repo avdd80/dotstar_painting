@@ -59,7 +59,7 @@ void init (void)
 }
 
 /* This function expects a linear array of size N x 144 pixels (R, G, B) with 32 bits per pixel */
-void prepare_frame (unsigned long *image_ptr)
+void prepare_frame (const unsigned long *image_ptr)
 {
 	unsigned int i, j;
 	unsigned int image_pixel_index = 0;
@@ -76,7 +76,7 @@ void prepare_frame (unsigned long *image_ptr)
 		for (j = 0; j < 10; j++)
 		{
 			/* Add 1 to account for START OF FRAME marker */
-			spi_pixel_index = 1 + j * 4;
+			spi_pixel_index = 4 + j * 4;
 			
 			framed_spi_data[i][spi_pixel_index]     = LED_BRIGHTNESS;
 			
@@ -99,6 +99,8 @@ void prepare_frame (unsigned long *image_ptr)
 		framed_spi_data[i][583] = 0xFF;
 
 	}
+
+	
 	return;
 }
 
