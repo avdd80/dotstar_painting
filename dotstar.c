@@ -119,6 +119,13 @@ void flush_column (unsigned char* data_ptr)
 	return;
 }
 
+void flush_column (unsigned char* data_ptr)
+{
+
+	wiringPiSPIDataRW (0, data_ptr, 584);
+	return;
+}
+
 void image_transpose (void)
 {
 	unsigned int i, j;
@@ -135,7 +142,7 @@ void image_transpose (void)
 	{
 		for (j = 0; j < bmpheight; j++)
 		{
-			printf ("0x%x\n", (image32_transpose[j] & 0xFF0000) >> 16);
+			printf ("0x%d\n", sizeof (unsigned int));
 		}
 	}
 	
