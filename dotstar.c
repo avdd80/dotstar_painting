@@ -10,7 +10,7 @@
 #define DELAY_MS       10
 
 
-unsigned int bmpwidth = 1600;
+unsigned int bmpwidth = 1633;
 unsigned int bmpheight = 144;
 
 /* Image loaded as 0xRR GG BB AA */
@@ -19,7 +19,7 @@ unsigned int* image_ptr;
 /* Max size = 2048 x 144 pixels */
 unsigned char framed_spi_data[2048][584];
 
-//unsigned int               transposed_image[2048*144];
+unsigned int               transposed_image[2048*144];
 extern const unsigned char clear_dotstar[584];
 
 int main (void)
@@ -48,11 +48,11 @@ void init (void)
 
 	load_image ();
 
-	//image_transpose ();
+	image_transpose ();
 	
 	printf ("transpose done\n");
 
-	prepare_frame (image_ptr);
+	prepare_frame (transposed_image);
 	
 	printf ("prepare frame done\n");
 	
@@ -66,7 +66,7 @@ void init (void)
 }
 
 /* This function expects a linear array of size N x 144 pixels (R, G, B) with 32 bits per pixel */
-void prepare_frame (const unsigned long *image_ptr)
+void prepare_frame (const unsigned long *data_ptr)
 {
 	unsigned int i, j;
 	unsigned int image_pixel_index = 0;
@@ -89,9 +89,9 @@ void prepare_frame (const unsigned long *image_ptr)
 			/* Add 1 to account for START OF FRAME marker */
 			spi_pixel_index = 4 + j * 4;
 			
-			r = (unsigned char)((image_ptr[image_pixel_index] & 0x000000FF));
-			g = (unsigned char)((image_ptr[image_pixel_index] & 0x0000FF00) >> 8);
-			b = (unsigned char)((image_ptr[image_pixel_index] & 0x00FF0000) >> 16);
+			r = (unsigned char)((data_ptr[image_pixel_index] & 0x000000FF));
+			g = (unsigned char)((data_ptr[image_pixel_index] & 0x0000FF00) >> 8);
+			b = (unsigned char)((data_ptr[image_pixel_index] & 0x00FF0000) >> 16);
 			
 			gamma = r * 3 + g * 6 + b;
 			
@@ -102,7 +102,7 @@ void prepare_frame (const unsigned long *image_ptr)
 			/* RED */
 			framed_spi_data[i][spi_pixel_index + 3] = r;
 			
-			printf ("0x%x\n", image_ptr[image_pixel_index]);
+			printf ("0x%x\n", data_ptr[image_pixel_index]);
 			/* GREEN */
 			framed_spi_data[i][spi_pixel_index + 2] = g; 
 			/* BLUE */
@@ -110,8 +110,7 @@ void prepare_frame (const unsigned long *image_ptr)
 
 			/* Increment by 1 32 bit pixel for R, G, B values */
 			image_pixel_index += 1;
-			
-			//printf ("%d,%d,%d\n", framed_spi_data[i][spi_pixel_index + 3], framed_spi_data[i][spi_pixel_index + 2], framed_spi_data[i][spi_pixel_index + 1]);
+
 		}
 
 		/* END OF FRAME marker */
@@ -121,13 +120,7 @@ void prepare_frame (const unsigned long *image_ptr)
 		framed_spi_data[i][583] = 0xFF;
 
 	}
-	
-	//for (j = 0; j < 584; j++)
-	//{
-		//printf ("%d\n", framed_spi_data[0][j]);
-	//}
 
-	
 	return;
 }
 
@@ -137,12 +130,13 @@ void load_image (void)
 	FILE* fp;
 	unsigned int num_pixels;
 	int bytes;
+	int dummy;
 	
 	fp = fopen ("test.rgba", "rb");
 
 	printf ("Reading image %dx%d\n", bmpwidth, bmpheight);
 	
-	if (bmpwidth != 144)
+	if (bmpheight != 144)
 	{
 		printf ("Exiting... Image height is %d. Consider resizing to 144", bmpheight);
 		exit (1);
@@ -155,9 +149,16 @@ void load_image (void)
 
 	bytes = fread ((unsigned char*)image_ptr, 1, num_pixels*4, fp);
 	
+	printf ("Image read done");
+	
+	fscanf (fp, "%d", dummy);
+	printf ("dummy read done");
+	
+	fclose (fp);
+	
 	printf ("read bytes = %d\n", bytes);
 
-	printf ("iamge_loaded\n");
+	printf ("image_loaded\n");
 
 	return;
 }
@@ -170,7 +171,7 @@ void flush_column (unsigned char* data_ptr)
 	return;
 }
 
-#if 0
+
 void image_transpose (void)
 {
 	unsigned int i, j;
@@ -187,5 +188,3 @@ void image_transpose (void)
 
 	return;
 }
-
-#endif
