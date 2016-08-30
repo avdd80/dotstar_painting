@@ -14,9 +14,9 @@ unsigned int bmpheight = 144;
 unsigned char framed_spi_data[2048][584];
 
 /* 32 bit image data: 0x00RRGGBB */
-//extern const unsigned long image32[];
+extern const unsigned long image32[];
 extern const unsigned char clear_dotstar[584];
-unsigned long image322[4] = {0x00FF0000, 0x0000FF00, 0x000000FF, 0x0020AB50};
+//unsigned long image32[4] = {0x00FF0000, 0x0000FF00, 0x000000FF, 0x0020AB50};
 
 int main (void)
 {
@@ -40,7 +40,7 @@ int main (void)
 void init (void)
 {
 
-	prepare_frame (image322);
+	prepare_frame (image32);
 	
 	wiringPiSPISetup (0, (SPI_SPEED_MHZ * 1000000));
 	
@@ -72,7 +72,7 @@ void prepare_frame (unsigned long *image_ptr)
 		framed_spi_data[i][2] = 0;
 		framed_spi_data[i][3] = 0;
 
-		for (j = 0; j < 1; j++)
+		for (j = 0; j < 144; j++)
 		{
 			/* Add 1 to account for START OF FRAME marker */
 			spi_pixel_index = 1 + j * 4;
