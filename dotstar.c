@@ -151,6 +151,7 @@ void load_image (void)
 	for (i = 0; i < bmpheight; i++)
 	{
 		fread ((unsigned char*)image_ptr[i], 1, bmpwidth, fp);
+		printf ("idx %d\n", i);
 	}
 	
 	printf ("Image read done");
