@@ -139,56 +139,22 @@ void load_image (void)
 	image_ptr = (unsigned int*) malloc (num_pixels);
 
 	bytes = fread ((unsigned char*)image_ptr, 1, num_pixels*4, fp);
+
+	fclose (fp);
 	
 	printf ("read bytes = %d\n", bytes);
-	
-	fclose (fp);
+
 
 	for (i = 0;i < 10; i++)
 	{
 		printf ("0x%x\n", image_ptr[i]);
 	}
 	
-	return;
-}
-
-#if 0
-void load_image (void)
-{
-
-	FILE* fp;
-	unsigned int num_pixels;
-	int i;
-	
-	fp = fopen ("test.bmp", "rb");
-
-	printf ("Reading image %dx%d\n", bmpwidth, bmpheight);
-	
-	if (bmpheight != 144)
-	{
-		printf ("Exiting... Image height is %d. Consider resizing to 144", bmpheight);
-		exit (1);
-	}
-	
-	num_pixels = bmpwidth * bmpheight;
-	
-	/* Allocate HEIGHT x WIDTH x 3 bytes to store the image */
-	image_ptr = (unsigned char*) malloc (num_pixels * 3);
-	
-	/* Seek to the start of image */
-	fseek (fp, 56, SEEK_SET);
-	fread ((unsigned char*)image_ptr, 1, num_pixels, fp);
-	
-	fclose (fp);
-
-	for (i = 0;i < 30; i++)
-	{
-		printf ("0x%x\n", image_ptr[i]);
-	}
+	exit (1);
 	
 	return;
 }
-#endif
+
 
 void flush_column (unsigned char* data_ptr)
 {
