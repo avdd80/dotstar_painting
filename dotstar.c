@@ -9,7 +9,7 @@
 #define SPI_SPEED_MHZ  ((unsigned long int)4)
 #define DELAY_MS       10
 
-#define BMPWIDTH        1633
+#define BMPWIDTH        2
 #define BMPHEIGHT       144
 
 
