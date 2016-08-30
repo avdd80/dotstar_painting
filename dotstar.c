@@ -9,7 +9,7 @@
 #define DELAY_MS       4
 
 
-unsigned int bmpwidth  = 1;
+unsigned int bmpwidth  = 192;
 unsigned int bmpheight = 144;
 
 /* Max size = 2048 x 144 pixels */
