@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <wiringPiSPI.h>
+#include <time.h>
 #include "dotstar.h"
 
 /*                      3 bit Header   5 bit brightness level */
 #define LED_BRIGHTNESS (0xE0         | 5                    )
 #define SPI_SPEED_MHZ  ((unsigned long int)4)
-#define DELAY_MS       4
+#define DELAY_MS       10
 
 
 unsigned int bmpwidth = 2;
@@ -64,6 +65,8 @@ void prepare_frame (const unsigned long *image_ptr)
 	unsigned int i, j;
 	unsigned int image_pixel_index = 0;
 	unsigned int spi_pixel_index   = 0;
+	unsigned char r, g, b;
+	unsigned int gamma;
 
 	for (i = 0; i < bmpwidth; i++)
 	{
@@ -78,14 +81,24 @@ void prepare_frame (const unsigned long *image_ptr)
 			/* Add 1 to account for START OF FRAME marker */
 			spi_pixel_index = 4 + j * 4;
 			
-			framed_spi_data[i][spi_pixel_index]     = LED_BRIGHTNESS;
+			r = (unsigned char)((image_ptr[image_pixel_index] & 0x000000FF));
+			g = (unsigned char)((image_ptr[image_pixel_index] & 0x0000FF00) >> 8);
+			b = (unsigned char)((image_ptr[image_pixel_index] & 0x00FF0000) >> 16);
+			
+			gamma = r * 3 + g * 6 + b;
+			
+			gamma >>= 7;
+			
+			framed_spi_data[i][spi_pixel_index]     = 0xE0 | ((char)gamma);
+			
 			/* RED */
-			framed_spi_data[i][spi_pixel_index + 3] = (unsigned char)((image_ptr[image_pixel_index] & 0x000000FF));
+			framed_spi_data[i][spi_pixel_index + 3] = r;
+			
 			printf ("0x%x\n", image_ptr[image_pixel_index]);
 			/* GREEN */
-			framed_spi_data[i][spi_pixel_index + 2] = (unsigned char)((image_ptr[image_pixel_index] & 0x0000FF00) >> 8);
+			framed_spi_data[i][spi_pixel_index + 2] = g; 
 			/* BLUE */
-			framed_spi_data[i][spi_pixel_index + 1] = (unsigned char)((image_ptr[image_pixel_index] & 0x00FF0000) >> 16);
+			framed_spi_data[i][spi_pixel_index + 1] = b; 
 
 			/* Increment by 1 32 bit pixel for R, G, B values */
 			image_pixel_index += 1;
