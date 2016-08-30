@@ -101,6 +101,7 @@ void prepare_frame (const unsigned long *data_ptr)
 			gamma >>= 7;
 			
 			framed_spi_data[i][spi_pixel_index]     = 0xE0 | ((char)gamma);
+			framed_spi_data[i][spi_pixel_index]     = 0xE0 | 0x05;
 			
 			/* RED */
 			framed_spi_data[i][spi_pixel_index + 3] = r;
