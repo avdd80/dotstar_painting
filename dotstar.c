@@ -15,7 +15,7 @@
 unsigned int bmpwidth;
 unsigned int bmpheight;
 
-unsigned char image_ptr;
+unsigned char* image_ptr;
 
 /* Max size = 2048 x 144 pixels */
 unsigned char framed_spi_data[2048][584];
@@ -144,7 +144,7 @@ void load_image (void)
 	
 	/* Seek to the start of image */
 	fseek (fp, 56, SEEK_SET);
-	fread ((unsigned char*)&image_ptr, 1, num_pixels, fp);
+	fread ((unsigned char*)image_ptr, 1, num_pixels, fp);
 	
 	fclose (fp);
 
