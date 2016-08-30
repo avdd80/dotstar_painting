@@ -8,7 +8,7 @@ unsigned int bmpwidth  = 1633;
 unsigned int bmpheight = 144;
 
 /* Max size = 2048 x 144 pixels */
-unsigned char              framed_spi_data[2048][584];
+unsigned char framed_spi_data[2048][584];
 
 /* 32 bit image data: 0x00RRGGBB */
 extern const unsigned long image32[];
@@ -84,7 +84,6 @@ void prepare_frame (unsigned long *image_ptr)
 void flush_column (unsigned char* data_ptr)
 {
 
-	wiringPiSPIDataRW (0, data, 584);
+	wiringPiSPIDataRW (0, data_ptr, 584);
 
-	return 0;
 }
