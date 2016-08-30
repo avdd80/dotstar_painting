@@ -17,7 +17,7 @@ unsigned char framed_spi_data[2048][584];
 
 /* 32 bit image data: 0x00RRGGBB */
 extern const unsigned long image32[];
-unsigned long image32_transpose[2048][144];
+unsigned long              image32_transpose[2048*144];
 extern const unsigned char clear_dotstar[584];
 //unsigned long image32[4] = {0x00FF0000, 0x0000FF00, 0x000000FF, 0x0020AB50};
 
@@ -83,7 +83,7 @@ void prepare_frame (const unsigned long *image_ptr)
 			spi_pixel_index = 4 + j * 4;
 			
 			framed_spi_data[i][spi_pixel_index]     = LED_BRIGHTNESS;
-			#if 0
+#if 0
 			/* RED */
 			framed_spi_data[i][spi_pixel_index + 3] = (unsigned char)((image_ptr[image_pixel_index] & 0xFF0000) >> 16);
 			/* GREEN */
@@ -101,7 +101,7 @@ void prepare_frame (const unsigned long *image_ptr)
 			/* Increment by 1 32 bit pixel for R, G, B values */
 			image_pixel_index += 1;
 			
-			printf ("%d\n", framed_spi_data[i][spi_pixel_index + 3]);
+			//printf ("%d\n", framed_spi_data[i][spi_pixel_index + 3]);
 		}
 
 		/* END OF FRAME marker */
@@ -136,7 +136,7 @@ void image_transpose (void)
 	{
 		for (j = 0; j < bmpheight; j++)
 		{
-			image32_transpose[i][j] = image32[j][i];
+			image32_transpose[i*bmpheight + j] = image32[i + bmpwidth*j];
 		}
 	}
 	return;
