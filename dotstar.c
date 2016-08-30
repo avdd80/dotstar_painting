@@ -75,7 +75,7 @@ void prepare_frame (const unsigned long *image_ptr)
 		framed_spi_data[i][2] = 0;
 		framed_spi_data[i][3] = 0;
 
-		for (j = 0; j < 10; j++)
+		for (j = 0; j < bmpheight; j++)
 		{
 			/* Add 1 to account for START OF FRAME marker */
 			spi_pixel_index = 4 + j * 4;
