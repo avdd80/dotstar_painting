@@ -9,7 +9,7 @@
 #define DELAY_MS       4
 
 
-unsigned int bmpwidth  = 3;
+unsigned int bmpwidth  = 350;
 unsigned int bmpheight = 144;
 
 /* Max size = 2048 x 144 pixels */
@@ -17,6 +17,7 @@ unsigned char framed_spi_data[2048][584];
 
 /* 32 bit image data: 0x00RRGGBB */
 extern const unsigned long image32[];
+unsigned long image32_transpose[2048][144];
 extern const unsigned char clear_dotstar[584];
 //unsigned long image32[4] = {0x00FF0000, 0x0000FF00, 0x000000FF, 0x0020AB50};
 
@@ -42,7 +43,9 @@ int main (void)
 void init (void)
 {
 
-	prepare_frame (image32);
+	image_transpose ();
+
+	prepare_frame (image32_transpose);
 	
 	wiringPiSPISetup (0, (SPI_SPEED_MHZ * 1000000));
 	
@@ -122,5 +125,19 @@ void flush_column (unsigned char* data_ptr)
 {
 
 	wiringPiSPIDataRW (0, data_ptr, 584);
+	return;
+}
+
+void image_transpose (void)
+{
+	unsigned int i, j;
+
+	for (i = 0; i < bmpwidth; i++)
+	{
+		for (j = 0; j < bmpheight; j++)
+		{
+			image32_transpose[i][j] = image32[j][i];
+		}
+	}
 	return;
 }

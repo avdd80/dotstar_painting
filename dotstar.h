@@ -10,4 +10,7 @@ void prepare_frame (const unsigned long *image_ptr);
 /* Flushes the column data to SPI */
 void flush_column (unsigned char* data_ptr);
 
+/* Perform a transpose on the image */
+void image_transpose (void);
+
 #endif /* _DOTSTAR_H */
