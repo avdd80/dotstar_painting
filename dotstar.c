@@ -121,7 +121,7 @@ void load_image (void)
 
 	FILE* fp;
 	unsigned int num_pixels;
-	int i;
+	int i, bytes;
 	
 	fp = fopen ("test.rgba", "rb");
 
@@ -138,7 +138,9 @@ void load_image (void)
 	/* Allocate HEIGHT x WIDTH x 3 bytes to store the image */
 	image_ptr = (unsigned int*) malloc (num_pixels);
 
-	fread ((unsigned char*)image_ptr, 1, num_pixels*4, fp);
+	bytes = fread ((unsigned char*)image_ptr, 1, num_pixels*4, fp);
+	
+	printf ("read bytes = %d\n", bytes);
 	
 	fclose (fp);
 
