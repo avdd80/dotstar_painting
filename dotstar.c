@@ -4,14 +4,15 @@
 
 /*                      3 bit Header   5 bit brightness level */
 #define LED_BRIGHTNESS (0xE0         | 7                    )
-unsigned int bmpwidth  = 1633;
+unsigned int bmpwidth  = 1;
 unsigned int bmpheight = 144;
 
 /* Max size = 2048 x 144 pixels */
 unsigned char framed_spi_data[2048][584];
 
 /* 32 bit image data: 0x00RRGGBB */
-extern const unsigned long image32[];
+//extern const unsigned long image32[];
+unsigned long image32[4] = {0x00FF0000, 0x0000FF00, 0x000000FF, 0x0020AB50};
 
 int main (void)
 {
@@ -26,7 +27,7 @@ int main (void)
 
 	void prepare_frame (image32);
 
-	wiringPiSPISetup (0, 12000000);
+	wiringPiSPISetup (0, 4000000);
 
 	for (i = 0; i < bmpwidth; i++)
 	{
@@ -57,7 +58,7 @@ void prepare_frame (unsigned long *image_ptr)
 		framed_spi_data[i][2] = 0;
 		framed_spi_data[i][3] = 0;
 
-		for (j = 0; j < 144; j++)
+		for (j = 0; j < 1; j++)
 		{
 			/* Add 1 to account for START OF FRAME marker */
 			spi_pixel_index = 1 + j * 4;
