@@ -29,13 +29,15 @@ int main (void)
 
 	unsigned int i;
 
-	init ();
+
 	
 	printf ("%d\n", sizeof (unsigned int));
 	
 	load_image ();
 	
 	exit (1);
+
+	init ();
 
 	for (i = 0; i < bmpwidth; i++)
 	{
