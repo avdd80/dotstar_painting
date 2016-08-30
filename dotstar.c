@@ -8,8 +8,8 @@
 #define SPI_SPEED_MHZ  ((unsigned long int)4)
 #define DELAY_MS       4
 
-#define BMP_WIDTH_OFFSET   16
-#define BMP_HEIGHT_OFFSET  20
+#define BMP_WIDTH_OFFSET   18
+#define BMP_HEIGHT_OFFSET  22
 
 
 unsigned int bmpwidth;
@@ -125,9 +125,10 @@ void load_image (void)
 	FILE* fp;
 	
 	fp = fopen ("test.bmp", "rb");
-	fseek (fp, BMP_WIDTH_OFFSET+2, SEEK_SET);
+	fseek (fp, BMP_WIDTH_OFFSET, SEEK_SET);
 	fread (&bmpwidth, 2, 1, fp);
-	fread (&bmpheight, 4, 1, fp);
+	fseek (fp, BMP_HEIGHT_OFFSET, SEEK_SET);
+	fread (&bmpheight, 2, 1, fp);
 
 	printf ("width = %d\n", bmpwidth);
 	printf ("height = %d\n", bmpheight);
