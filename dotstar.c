@@ -9,7 +9,7 @@
 #define DELAY_MS       4
 
 
-unsigned int bmpwidth  = 5;
+unsigned int bmpwidth  = 3;
 unsigned int bmpheight = 144;
 
 /* Max size = 2048 x 144 pixels */
@@ -97,6 +97,8 @@ void prepare_frame (const unsigned long *image_ptr)
 
 			/* Increment by 1 32 bit pixel for R, G, B values */
 			image_pixel_index += 1;
+			
+			printf ("%d\n", framed_spi_data[i][spi_pixel_index + 3]);
 		}
 
 		/* END OF FRAME marker */
@@ -119,7 +121,6 @@ void prepare_frame (const unsigned long *image_ptr)
 void flush_column (unsigned char* data_ptr)
 {
 
-	printf ("0x%x\n", data_ptr);
 	wiringPiSPIDataRW (0, data_ptr, 584);
 	return;
 }
