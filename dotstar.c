@@ -1,14 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <wiringPiSPI.h>
-#include <sys/time.h>
-#include <unistd.h>
 #include "dotstar.h"
 
 /*                      3 bit Header   5 bit brightness level */
 #define LED_BRIGHTNESS (0xE0         | 1                    )
 #define SPI_SPEED_MHZ  ((unsigned long int)8)
-#define DELAY_US       50000
+#define DELAY_MS       10
 
 
 unsigned int bmpwidth  = 1600;
@@ -32,7 +30,7 @@ int main (void)
 	for (i = 0; i < bmpwidth; i++)
 	{
 		flush_column (&framed_spi_data[i][0]);
-		sleep (0.3);
+		delay (DELAY_NS);
 		/* delay 30.86 ms - 10 mph */
 		/* data write overhead = 389 us */		
 	}
